@@ -87,7 +87,6 @@ export default function Login() {
               leftIcon={<CgMail className="w-6 h-6 text-gray-400" />}
               onChange={(e) => handleOnChange(e)}
               name="email"
-              // required
             />
             {errors.emailError && (
               <p className="text-red-500 text-xs font-semibold">
@@ -108,7 +107,6 @@ export default function Login() {
               isPassword={true}
               onChange={(e) => handleOnChange(e)}
               name="password"
-              // required
             />
             {errors.passwordError && (
               <p className="text-red-500 text-xs font-semibold">
