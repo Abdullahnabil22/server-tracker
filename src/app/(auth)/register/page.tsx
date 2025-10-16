@@ -12,19 +12,70 @@ import { BiUser } from "react-icons/bi";
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [input, setInput] = useState({
+    name: "",
     email: "",
     password: "",
   });
+  const [errors, setErrors] = useState({
+    nameError: "",
+    emailError: "",
+    passwordError: "",
+  });
+  const [loading, setLoading] = useState(false);
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setInput({
       ...input,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    if (name === "name") {
+      setErrors((prev) => ({ ...prev, nameError: "" }));
+    }
+    if (name === "email") {
+      setErrors((prev) => ({ ...prev, emailError: "" }));
+    }
+    if (name === "password") {
+      setErrors((prev) => ({ ...prev, passwordError: "" }));
+    }
+  };
+  const validate = () => {
+    const nextErrors = { nameError: "", emailError: "", passwordError: "" };
+    if (!input.name || input.name.trim() === "") {
+      nextErrors.nameError = "Name is required";
+    }
+    if (!input.email || input.email.trim() === "") {
+      nextErrors.emailError = "Email is required";
+    }
+    if (!input.password) {
+      nextErrors.passwordError = "Password is required";
+    } else {
+      const pwd = input.password;
+      const lengthOk = pwd.length >= 8;
+      const hasLetter = /[A-Za-z]/.test(pwd);
+      const hasNumber = /[0-9]/.test(pwd);
+      if (!lengthOk || !hasLetter || !hasNumber) {
+        nextErrors.passwordError =
+          "Password must be at least 8 characters and include letters and numbers";
+      }
+    }
+    setErrors(nextErrors);
+    return nextErrors;
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setInput({ email: "", password: "" });
-    console.log(input);
+    const validation = validate();
+
+    const hasErrors =
+      validation.nameError || validation.emailError || validation.passwordError;
+    if (hasErrors) return;
+    setLoading(true);
+    setInput({ name: "", email: "", password: "" });
+    setLoading(false);
+  };
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
@@ -44,6 +95,11 @@ export default function Register() {
               onChange={(e) => handleOnChange(e)}
               name="name"
             />
+            {errors.nameError && (
+              <p className="text-red-500 text-xs font-semibold">
+                {errors.nameError}
+              </p>
+            )}
           </div>
           <div className="space-y-2 text-sm ">
             <Label label="Email" id="email" />
@@ -53,7 +109,13 @@ export default function Register() {
               placeHolder="Enter your email"
               leftIcon={<CgMail className="w-6 h-6 text-gray-400" />}
               onChange={(e) => handleOnChange(e)}
+              name="email"
             />
+            {errors.emailError && (
+              <p className="text-red-500 text-xs font-semibold">
+                {errors.emailError}
+              </p>
+            )}
           </div>
           <div className="space-y-2 text-sm ">
             <Label label="Password" id="password" />
@@ -66,15 +128,22 @@ export default function Register() {
               onClick={() => setShowPassword(!showPassword)}
               isPassword={true}
               onChange={(e) => handleOnChange(e)}
+              name="password"
             />
+            {errors.passwordError && (
+              <p className="text-red-500 text-xs font-semibold">
+                {errors.passwordError}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-4">
             <button
               type="submit"
               className="bg-secondary text-white py-2 px-4 rounded-md w-full hover:bg-primary transition-all duration-200 cursor-pointer active:transform active:scale-95"
               aria-label="signup"
+              onKeyDown={(e) => handleEnterPress(e)}
             >
-              Get Started
+              {loading ? "Getting Started..." : "Get Started"}
             </button>
             <p className="text-sm text-center text-muted-foreground font-semibold">
               Already have an account?{" "}

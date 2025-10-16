@@ -10,21 +10,62 @@ import XOrithmLogo from "@/components/ui/Logo";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({
+    emailError: "",
+    passwordError: "",
+  });
+  const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setInput({
       ...input,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    if (name === "email") {
+      setErrors((prev) => ({ ...prev, emailError: "" }));
+    }
+    if (name === "password") {
+      setErrors((prev) => ({ ...prev, passwordError: "" }));
+    }
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const validate = () => {
+    const nextErrors = { emailError: "", passwordError: "" };
+    if (!input.email || input.email.trim() === "") {
+      nextErrors.emailError = "Email is required";
+    }
+    if (!input.password) {
+      nextErrors.passwordError = "Password is required";
+    }
+    setErrors(nextErrors);
+    return nextErrors;
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    setLoading(false);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const validation = validate();
+
+    const hasErrors = validation.emailError || validation.passwordError;
+    if (hasErrors) return;
+    await handleLogin();
     setInput({ email: "", password: "" });
-    console.log(input);
+  };
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleLogin();
+    }
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
@@ -46,7 +87,13 @@ export default function Login() {
               leftIcon={<CgMail className="w-6 h-6 text-gray-400" />}
               onChange={(e) => handleOnChange(e)}
               name="email"
+              // required
             />
+            {errors.emailError && (
+              <p className="text-red-500 text-xs font-semibold">
+                {errors.emailError}
+              </p>
+            )}
           </div>
           <div className="space-y-2 text-sm ">
             <Label label="Password" id="password" />
@@ -61,15 +108,23 @@ export default function Login() {
               isPassword={true}
               onChange={(e) => handleOnChange(e)}
               name="password"
+              // required
             />
+            {errors.passwordError && (
+              <p className="text-red-500 text-xs font-semibold">
+                {errors.passwordError}
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-4">
             <button
               type="submit"
-              className="bg-secondary text-white py-2 px-4 rounded-md w-full hover:bg-primary transition-all duration-200 cursor-pointer active:transform active:scale-95"
+              disabled={loading}
+              className="bg-secondary text-white py-2 px-4 rounded-md w-full hover:bg-primary transition-all duration-200 cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               aria-label="login"
+              onKeyDown={(e) => handleEnterPress(e)}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
             <p className="text-sm text-center text-muted-foreground font-semibold">
               Don&apos;t have an account?{" "}

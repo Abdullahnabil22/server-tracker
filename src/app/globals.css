@@ -15,6 +15,7 @@
   --upLight: #dbfce7;
   --downLight: #ffe2e2;
   --degradLight: #fef9c2;
+  font-family: "'Inter Tight', 'Inter Tight Fallback'", sans-serif;
 }
 
 @theme inline {
