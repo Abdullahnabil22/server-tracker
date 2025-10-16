@@ -7,14 +7,16 @@
   --secondary: #010ed0;
   --back: #a3d7f1;
   --main: #0a0d31;
+  --accent: #ff9f1c;
+  --text-main: #ffffff;
   --text: #242627;
   --input-text: #444444;
   --up: #00a63e;
   --down: #ff0000;
-  --degrad: #ffa500;
+  --degarded: #ffa500;
   --upLight: #dbfce7;
   --downLight: #ffe2e2;
-  --degradLight: #fef9c2;
+  --degardedLight: #fef9c2;
   font-family: "'Inter Tight', 'Inter Tight Fallback'", sans-serif;
 }
 
@@ -25,13 +27,15 @@
   --color-secondary: var(--secondary);
   --color-back: var(--back);
   --color-main: var(--main);
+  --color-accent: var(--accent);
+  --color-text-main: var(--text-main);
   --color-text: var(--text);
   --color-input-text: var(--input-text);
   --color-up: var(--up);
   --color-down: var(--down);
-  --color-degrad: var(--degard);
+  --color-degraded: var(--degarded);
   --color-up-light: var(--upLight);
   --color-down-light: var(--downLight);
-  --color-degrad-light: var(--degardLight);
+  --color-degarded-light: var(--degardedLight);
   --font-interTight: var(--font-interTight);
 }

@@ -3,11 +3,14 @@ import Input from "@/components/ui/Input";
 import Link from "next/link";
 import { CgMail } from "react-icons/cg";
 import Label from "@/components/ui/Label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuLock } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import XOrithmLogo from "@/components/ui/Logo";
 import { BiUser } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
+import AuthLoading from "@/components/AuthLoading";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +24,19 @@ export default function Register() {
     emailError: "",
     passwordError: "",
   });
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { signup, isAuthenticated, loading: authLoading } = useAuth();
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, authLoading, router]);
+  if (authLoading) {
+    return <AuthLoading />;
+  }
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInput({
@@ -61,22 +76,37 @@ export default function Register() {
     setErrors(nextErrors);
     return nextErrors;
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignup = async () => {
+    setLoading(true);
+    const result = await signup(input.email, input.password, input.name);
+    setLoading(false);
+
+    if (result.success) {
+      router.push("/");
+    } else {
+      setError(result.error || "Signup failed");
+    }
+
+    return result;
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validation = validate();
-
     const hasErrors =
       validation.nameError || validation.emailError || validation.passwordError;
     if (hasErrors) return;
-    setLoading(true);
+    await handleSignup();
     setInput({ name: "", email: "", password: "" });
-    setLoading(false);
   };
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  const handleEnterPress = async (
+    e: React.KeyboardEvent<HTMLButtonElement>
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      await handleSignup();
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
       <div className="w-full max-w-md bg-background rounded-4xl  shadow p-5 ">
@@ -139,12 +169,17 @@ export default function Register() {
           <div className="flex flex-col gap-4">
             <button
               type="submit"
-              className="bg-secondary text-white py-2 px-4 rounded-md w-full hover:bg-primary transition-all duration-200 cursor-pointer active:transform active:scale-95"
+              className="bg-secondary text-white py-2 px-4 rounded-md w-full hover:bg-primary transition-all duration-200 cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+              disabled={loading}
+              aria-busy={loading}
               aria-label="signup"
               onKeyDown={(e) => handleEnterPress(e)}
             >
               {loading ? "Getting Started..." : "Get Started"}
             </button>
+            {error && (
+              <p className="text-red-500 text-xs font-semibold">{error}</p>
+            )}
             <p className="text-sm text-center text-muted-foreground font-semibold">
               Already have an account?{" "}
               <Link

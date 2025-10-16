@@ -3,10 +3,13 @@ import Input from "@/components/ui/Input";
 import Link from "next/link";
 import { CgMail } from "react-icons/cg";
 import Label from "@/components/ui/Label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuLock } from "react-icons/lu";
 import { FcGoogle } from "react-icons/fc";
 import XOrithmLogo from "@/components/ui/Logo";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/authContext";
+import AuthLoading from "@/components/AuthLoading";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,11 +17,23 @@ export default function Login() {
     emailError: "",
     passwordError: "",
   });
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState({
     email: "",
     password: "",
   });
+  const { login, isAuthenticated, loading: authLoading } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      router.push("/");
+    }
+  }, [isAuthenticated, authLoading, router]);
+
+  if (authLoading) {
+    return <AuthLoading />;
+  }
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,8 +63,16 @@ export default function Login() {
 
   const handleLogin = async () => {
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
+    const result = await login(input.email, input.password);
+
     setLoading(false);
+    if (result.success) {
+      router.push("/");
+    } else {
+      setError(result.error || "Login failed");
+    }
+
+    return result;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,15 +81,20 @@ export default function Login() {
 
     const hasErrors = validation.emailError || validation.passwordError;
     if (hasErrors) return;
+
     await handleLogin();
+
     setInput({ email: "", password: "" });
   };
-  const handleEnterPress = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  const handleEnterPress = async (
+    e: React.KeyboardEvent<HTMLButtonElement>
+  ) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleLogin();
+      await handleLogin();
     }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
       <div className="w-full max-w-md bg-background rounded-4xl shadow p-5 ">
@@ -124,6 +152,9 @@ export default function Login() {
             >
               {loading ? "Logging in..." : "Login"}
             </button>
+            {error && (
+              <p className="text-red-500 text-sm font-semibold">{error}</p>
+            )}
             <p className="text-sm text-center text-muted-foreground font-semibold">
               Don&apos;t have an account?{" "}
               <Link
