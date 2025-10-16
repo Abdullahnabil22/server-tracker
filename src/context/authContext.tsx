@@ -2,6 +2,7 @@
 import { authService } from "@/lib/auth";
 import { User } from "@/types/types";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 interface AuthContextType {
   user: User | null;
@@ -15,7 +16,7 @@ interface AuthContextType {
     password: string,
     name: string
   ) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+  logout: () => Promise<void>;
   loading: boolean;
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,12 +24,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
+    if (status === "loading") {
+      setLoading(true);
+      return;
+    }
+
+    if (session?.user) {
+      const nextAuthUser: User = {
+        id: session.user.id || crypto.randomUUID(),
+        email: session.user.email || "",
+        name: session.user.name || "",
+      };
+      setUser(nextAuthUser);
+      localStorage.setItem("user", JSON.stringify(nextAuthUser));
+    } else {
+      const currentUser = authService.getCurrentUser();
+      setUser(currentUser);
+    }
+
     setLoading(false);
-  }, []);
+  }, [session, status]);
 
   const login = async (email: string, password: string) => {
     const result = await authService.login(email, password);
@@ -45,7 +63,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     return result;
   };
-  const logout = () => {
+  const logout = async () => {
+    if (session) {
+      await signOut({ redirect: false });
+    }
     authService.logout();
     setUser(null);
   };

@@ -10,6 +10,7 @@ import XOrithmLogo from "@/components/ui/Logo";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import AuthLoading from "@/components/AuthLoading";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -94,6 +95,19 @@ export default function Login() {
       await handleLogin();
     }
   };
+  const handleGoogleLogin = async function () {
+    try {
+      setLoading(true);
+      await signIn("google", {
+        callbackUrl: "/",
+        redirect: true,
+      });
+    } catch (error) {
+      console.error("Google login error:", error);
+      setError("Google login failed. Please try again.");
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
@@ -173,8 +187,13 @@ export default function Login() {
         </div>
 
         <div className="mt-6">
-          <button className="h-12 w-full bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95">
+          <button
+            className="h-12 w-full bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={() => handleGoogleLogin()}
+            disabled={loading}
+          >
             <FcGoogle className="w-6 h-6" />
+            {loading && <span className="ml-2 text-sm">Signing in...</span>}
           </button>
         </div>
       </div>

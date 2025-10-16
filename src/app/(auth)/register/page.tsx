@@ -11,6 +11,7 @@ import { BiUser } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/authContext";
 import AuthLoading from "@/components/AuthLoading";
+import { signIn } from "next-auth/react";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -107,6 +108,20 @@ export default function Register() {
     }
   };
 
+  const handleGoogleLogin = async function () {
+    try {
+      setLoading(true);
+      await signIn("google", {
+        callbackUrl: "/",
+        redirect: true,
+      });
+    } catch (error) {
+      console.error("Google login error:", error);
+      setError("Google login failed. Please try again.");
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary via-back">
       <div className="w-full max-w-md bg-background rounded-4xl  shadow p-5 ">
@@ -199,10 +214,13 @@ export default function Register() {
 
         <div className="mt-6">
           <button
-            className="h-12 w-full bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95"
+            className="h-12 w-full bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={() => handleGoogleLogin()}
+            disabled={loading}
             aria-label="google"
           >
             <FcGoogle className="w-6 h-6" />
+            {loading && <span className="ml-2 text-sm">Signing in...</span>}
           </button>
         </div>
       </div>

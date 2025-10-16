@@ -8,8 +8,8 @@ export default function Header() {
   const { logout, user } = useAuth();
   const initials = getInitials(user?.name);
   const router = useRouter();
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push("/login");
   };
 
