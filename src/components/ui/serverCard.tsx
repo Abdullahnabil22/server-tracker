@@ -1,13 +1,13 @@
 import { Server } from "@/types/types";
 import { ServerStatusBadge } from "./serverBadge";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ServerCard({ server }: { server: Server }) {
-  const router = useRouter();
   return (
-    <div
-      className="relative text-background flex flex-col gap-6 rounded-xl border py-6 shadow-sm bg-[rgba(24,29,84,0.6)] backdrop-blur-sm border-[rgba(255,255,255,0.06)] p-5 cursor-pointer"
-      onClick={() => router.push(`/servers/${server.id}`)}
+    <Link
+      href={`/servers/${server.id}`}
+      aria-label={`Open server ${server.name}`}
+      className="relative text-background flex flex-col gap-6 rounded-xl border py-6 shadow-sm bg-[rgba(24,29,84,0.6)] backdrop-blur-sm border-[rgba(255,255,255,0.06)] p-5 cursor-pointer transition duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:border-[rgba(255,255,255,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
     >
       <header className="pb-3">
         <div className="flex items-start justify-between">
@@ -43,6 +43,6 @@ export default function ServerCard({ server }: { server: Server }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
