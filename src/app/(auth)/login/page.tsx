@@ -114,7 +114,7 @@ export default function Login() {
       <div className="w-full max-w-md bg-background rounded-4xl shadow p-5 ">
         <div className="flex flex-col space-y-4 items-center mb-2">
           <XOrithmLogo size="large" animate />
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             Sign in with email
           </h1>
         </div>
@@ -126,12 +126,12 @@ export default function Login() {
               type="text"
               value={input.email}
               placeHolder="Enter your email"
-              leftIcon={<CgMail className="w-6 h-6 text-gray-400" />}
+              leftIcon={<CgMail className="w-6 h-6 text-muted-foreground" />}
               onChange={(e) => handleOnChange(e)}
               name="email"
             />
             {errors.emailError && (
-              <p className="text-red-500 text-xs font-semibold">
+              <p className="text-down-dark text-xs font-semibold">
                 {errors.emailError}
               </p>
             )}
@@ -143,7 +143,7 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               value={input.password}
               placeHolder="Enter your password"
-              leftIcon={<LuLock className="w-6 h-6 text-gray-400" />}
+              leftIcon={<LuLock className="w-6 h-6 text-muted-foreground" />}
               showPasswordToggle={showPassword}
               onClick={() => setShowPassword(!showPassword)}
               isPassword={true}
@@ -151,7 +151,7 @@ export default function Login() {
               name="password"
             />
             {errors.passwordError && (
-              <p className="text-red-500 text-xs font-semibold">
+              <p className="text-down-dark text-xs font-semibold">
                 {errors.passwordError}
               </p>
             )}
@@ -167,7 +167,7 @@ export default function Login() {
               {loading ? "Logging in..." : "Login"}
             </button>
             {error && (
-              <p className="text-red-500 text-sm font-semibold">{error}</p>
+              <p className="text-down-dark text-sm font-semibold">{error}</p>
             )}
             <p className="text-sm text-center text-muted-foreground font-semibold">
               Don&apos;t have an account?{" "}
@@ -181,14 +181,14 @@ export default function Login() {
           </div>
         </form>
         <div className="flex items-center gap-3 mt-6">
-          <div className="flex-1 h-px bg-gray-300"></div>
-          <span className="text-sm text-gray-600">Or sign in with</span>
-          <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex-1 h-px bg-muted"></div>
+          <span className="text-sm text-muted-foreground">Or sign in with</span>
+          <div className="flex-1 h-px bg-muted"></div>
         </div>
 
         <div className="mt-6">
           <button
-            className="h-12 w-full bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="h-12 w-full bg-muted hover:bg-surface border border-border rounded-xl transition-all duration-200 flex items-center justify-center cursor-pointer active:transform active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
             onClick={() => handleGoogleLogin()}
             disabled={loading}
           >

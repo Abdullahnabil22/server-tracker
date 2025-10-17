@@ -146,7 +146,7 @@ export default function ServerDetailsPage() {
                         ? "bg-up-light"
                         : server.status === "down"
                         ? "bg-down-light"
-                        : "bg-degarded-light"
+                        : "bg-degraded-light"
                     }`}
                   >
                     <p className="text-sm font-medium text-foreground mb-1">

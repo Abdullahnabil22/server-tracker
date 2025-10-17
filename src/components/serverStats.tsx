@@ -21,7 +21,7 @@ export default function ServerStats({ servers }: { servers: Server[] }) {
       <div className="grid gap-4 md:grid-cols-2">
         <div className="col-span-1">
           <div className="grid gap-4 md:grid-cols-2 h-full">
-            <div className=" bg-gradient-to-br from-emerald-900/40 to-emerald-900/10 backdrop-blur-xl border border-emerald-500/20 rounded-2xl p-8 hover:border-emerald-500/40 transition-all">
+            <div className=" bg-gradient-to-br from-up-dark/40 to-up-dark/10 backdrop-blur-xl border border-up/20 rounded-2xl p-8 hover:border-up/40 transition-all">
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="relative w-32 h-32 mb-4">
                   <svg className="transform -rotate-90 w-32 h-32">
@@ -50,34 +50,38 @@ export default function ServerStats({ servers }: { servers: Server[] }) {
                         y1="0%"
                         x2="100%"
                       >
-                        <stop offset="0%" stopColor="#10b981" />
-                        <stop offset="100%" stopColor="#059669" />
+                        <stop offset="0%" stopColor="var(--up)" />
+                        <stop offset="100%" stopColor="var(--upDark)" />
                       </linearGradient>
                     </defs>
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <p className="text-4xl font-bold text-white">
+                      <p className="text-4xl font-bold text-text-main">
                         {healthScore}%
                       </p>
-                      <p className="text-xs text-slate-400">Operational</p>
+                      <p className="text-xs text-muted-foreground">
+                        Operational
+                      </p>
                     </div>
                   </div>
                 </div>
-                <p className="text-slate-300 font-medium">System Health</p>
+                <p className="text-muted-foreground font-medium">
+                  System Health
+                </p>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-indigo-900/40 to-indigo-900/10 backdrop-blur-xl border border-indigo-500/20 rounded-2xl p-6 hover:border-indigo-500/40 transition-all">
+            <div className="bg-gradient-to-br from-secondary/40 to-secondary/10 backdrop-blur-xl border border-secondary/20 rounded-2xl p-6 hover:border-secondary/40 transition-all">
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="text-center mb-4">
-                  <p className="text-2xl font-bold text-white mb-1">
+                  <p className="text-2xl font-bold text-text-main mb-1">
                     {avgResponseTime.toFixed(0)}ms
                   </p>
-                  <p className="text-sm text-indigo-300">Avg Response</p>
+                  <p className="text-sm text-muted-foreground">Avg Response</p>
                 </div>
-                <div className="w-full bg-indigo-900/30 rounded-full h-2 mb-3">
+                <div className="w-full bg-secondary/30 rounded-full h-2 mb-3">
                   <div
-                    className="bg-gradient-to-r from-indigo-400 to-indigo-600 h-2 rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-secondary to-primary h-2 rounded-full transition-all duration-500"
                     style={{
                       width: `${Math.min(
                         (avgResponseTime / 1000) * 100,
@@ -87,7 +91,7 @@ export default function ServerStats({ servers }: { servers: Server[] }) {
                   ></div>
                 </div>
                 <div className="text-center">
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-muted-foreground">
                     Uptime: {avgUptime.toFixed(1)}%
                   </p>
                 </div>
@@ -100,8 +104,8 @@ export default function ServerStats({ servers }: { servers: Server[] }) {
             <Card
               title="Total Servers"
               number={servers.length}
-              bgColor="bg-blue-200"
-              icon={<BiServer className="text-blue-600 w-5 h-5" />}
+              bgColor="bg-back"
+              icon={<BiServer className="text-secondary w-5 h-5" />}
             />
             <Card
               title="Up Servers"
@@ -118,7 +122,7 @@ export default function ServerStats({ servers }: { servers: Server[] }) {
             <Card
               title="Degraded Servers"
               number={degradedServers}
-              bgColor="bg-degarded-light"
+              bgColor="bg-degraded-light"
               icon={<CiWarning className="text-degraded w-5 h-5" />}
             />
           </div>

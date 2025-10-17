@@ -18,21 +18,21 @@ export function MetricCard({
   icon,
 }: MetricCardProps) {
   const getColorClass = (val: number) => {
-    if (val >= 80) return "text-red-500";
-    if (val >= 60) return "text-yellow-500";
-    return "text-green-500";
+    if (val >= 80) return "text-down-dark";
+    if (val >= 60) return "text-degraded-dark";
+    return "text-up-dark";
   };
 
   const getProgressColor = (val: number) => {
-    if (val >= 80) return "from-red-500 to-red-600";
-    if (val >= 60) return "from-yellow-500 to-yellow-600";
-    return "from-green-500 to-green-600";
+    if (val >= 80) return "from-down to-down-dark";
+    if (val >= 60) return "from-degraded to-degraded-dark";
+    return "from-up to-up-dark";
   };
 
   const getBackgroundColor = (val: number) => {
-    if (val >= 80) return "bg-red-50 border-red-200";
-    if (val >= 60) return "bg-yellow-50 border-yellow-200";
-    return "bg-green-50 border-green-200";
+    if (val >= 80) return "bg-down-light border-border";
+    if (val >= 60) return "bg-degraded-light border-border";
+    return "bg-up-light border-border";
   };
 
   const getStatusText = (val: number) => {
@@ -69,8 +69,12 @@ export function MetricCard({
                 </div>
               )}
               <div>
-                <p className="text-sm font-semibold text-gray-700">{label}</p>
-                <p className="text-xs text-gray-500">{getStatusText(value)}</p>
+                <p className="text-sm font-semibold text-card-foreground">
+                  {label}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {getStatusText(value)}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -85,7 +89,7 @@ export function MetricCard({
               )} transition-colors duration-300`}
             >
               {value.toFixed(1)}
-              <span className="text-lg font-medium text-gray-600 ml-1">
+              <span className="text-lg font-medium text-muted-foreground ml-1">
                 {unit}
               </span>
             </p>
@@ -94,7 +98,7 @@ export function MetricCard({
           {showProgress && (
             <div className="space-y-2">
               <div className="relative">
-                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
                   <div
                     className={`h-full bg-gradient-to-r ${getProgressColor(
                       value
@@ -110,7 +114,7 @@ export function MetricCard({
                 ></div>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-gray-500">0{unit}</span>
+                <span className="text-muted-foreground">0{unit}</span>
                 <span
                   className={`font-medium px-2 py-1 rounded-full text-xs ${getBackgroundColor(
                     value
@@ -118,7 +122,7 @@ export function MetricCard({
                 >
                   {getStatusText(value)}
                 </span>
-                <span className="text-gray-500">100{unit}</span>
+                <span className="text-muted-foreground">100{unit}</span>
               </div>
             </div>
           )}

@@ -80,14 +80,14 @@ export default function Dashboard() {
               placeHolder="Search servers by name, IP, location, or type..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-white"
+              className="bg-card"
               type="search"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="w-full sm:w-[180px] bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-input-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent  hover:border-gray-400 transition-colors"
+            className="w-full sm:w-[180px] bg-card border border-border rounded-lg px-3 py-2 text-sm text-input-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent  hover:border-ring transition-colors"
             aria-label="Filter by status"
             title="Filter by status"
           >
@@ -99,7 +99,7 @@ export default function Dashboard() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="w-full sm:w-[180px] bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-input-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent  hover:border-gray-400 transition-colors"
+            className="w-full sm:w-[180px] bg-card border border-border rounded-lg px-3 py-2 text-sm text-input-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent  hover:border-ring transition-colors"
             aria-label="Sort by"
             title="Sort by"
           >

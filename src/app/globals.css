@@ -13,10 +13,21 @@
   --input-text: #444444;
   --up: #00a63e;
   --down: #ff0000;
-  --degarded: #ffa500;
+  --degraded: #ffa500;
   --upLight: #dbfce7;
   --downLight: #ffe2e2;
-  --degardedLight: #fef9c2;
+  --degradedLight: #fef9c2;
+  --muted: #f5f7fb;
+  --muted-foreground: #6b7280;
+  --card: #ffffff;
+  --card-foreground: #0a0d31;
+  --surface: #f8fafc;
+  --border: rgba(0, 0, 0, 0.08);
+  --overlay: rgba(255, 255, 255, 0.06);
+  --ring: #93c5fd;
+  --upDark: #059669;
+  --downDark: #dc2626;
+  --degradedDark: #d97706;
   font-family: "'Inter Tight', 'Inter Tight Fallback'", sans-serif;
 }
 
@@ -33,9 +44,20 @@
   --color-input-text: var(--input-text);
   --color-up: var(--up);
   --color-down: var(--down);
-  --color-degraded: var(--degarded);
+  --color-degraded: var(--degraded);
   --color-up-light: var(--upLight);
   --color-down-light: var(--downLight);
-  --color-degarded-light: var(--degardedLight);
+  --color-degraded-light: var(--degradedLight);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-overlay: var(--overlay);
+  --color-ring: var(--ring);
+  --color-up-dark: var(--upDark);
+  --color-down-dark: var(--downDark);
+  --color-degraded-dark: var(--degradedDark);
   --font-interTight: var(--font-interTight);
 }

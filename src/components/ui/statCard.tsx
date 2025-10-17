@@ -12,7 +12,7 @@ export default function Card({
   subTitle?: string;
 }) {
   return (
-    <div className="relative text-background flex flex-col gap-6 rounded-xl border py-6 shadow-sm bg-[rgba(24,29,84,0.6)] backdrop-blur-sm border-[rgba(255,255,255,0.06)]">
+    <div className="relative text-text-main flex flex-col gap-6 rounded-xl border py-6 shadow-sm bg-overlay backdrop-blur-sm border-border">
       <div className="p-6">
         <div className="flex items-center justify-between">
           <div>
